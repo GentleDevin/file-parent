@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    default:
+      url: jdbc:mysql://192.168.200.197:3306/minio?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: minio
+      password: minio
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      initialSize: 5
+      minIdle: 5
+      maxActive: 100
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      poolPreparedStatements: false
+      maxPoolPreparedStatementPerConnectionSize: 100
+      filters: stat,config
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      useGlobalDataSourceStat: true
+      schema: classpath:schema.sql
+      data: classpath:data.sql
+      #init db
+      initialize: false
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  jpa:
+    database: MYSQL
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    ##open-in-view: true
+
+minio:
+  endpoint: 192.168.200.197
+  port: 9000
+  accessKey: admin
+  secretKey: admin123456
+  secure: false
+  bucketName: image
+  configDir: home/data/
+

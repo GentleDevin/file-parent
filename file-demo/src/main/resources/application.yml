@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 1GB
+      enabled: true
+      max-request-size: 2GB
+
+server:
+  port: 80
+  servlet:
+    context-path: /minio
+    session:
+      timeout: 3600
+
+  tomcat:
+    background-processor-delay: 30
+    uri-encoding: UTF-8
+    max-connections: 1000
+
+  http:
+    enabled:
+      charset: true
+    encoding:
+      charset: utf-8
+      force: true

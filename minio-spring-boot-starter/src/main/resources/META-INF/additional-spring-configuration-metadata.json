@@ -1,0 +1,40 @@
+{
+  "properties": [
+    {
+      "name": "minio.endpoint",
+      "type": "java.lang.String",
+      "description": "connection minio server address",
+      "defaultValue": "localhost"
+    },{
+      "name": "minio.port",
+      "type": "java.lang.Integer",
+      "description": "connection minio server port",
+      "defaultValue": 9000
+    },{
+      "name": "minio.accessKey",
+      "type": "java.lang.String",
+      "description": "connection minio server accessKey",
+      "defaultValue": "admin"
+    },{
+      "name": "minio.secretKey",
+      "type": "java.lang.String",
+      "description": "connection minio server secretKey",
+      "defaultValue": "admin123456"
+    },{
+      "name": "minio.secure",
+      "type": "java.lang.Boolean",
+      "description": "connection minio server secure",
+      "defaultValue": false
+    },{
+      "name": "minio.bucketName",
+      "type": "java.lang.String",
+      "description": "connection minio server bucketName",
+      "defaultValue": "image"
+    },{
+      "name": "minio.configDir",
+      "type": "java.lang.String",
+      "description": "connection minio server configDir",
+      "defaultValue": "home/data/"
+    }
+  ]
+}

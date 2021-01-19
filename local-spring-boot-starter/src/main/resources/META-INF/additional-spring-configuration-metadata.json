@@ -1,0 +1,10 @@
+{
+  "properties": [
+    {
+      "name": "local.configDir",
+      "type": "java.lang.String",
+      "description": "this is local filestore configDir",
+      "defaultValue": "home/data/"
+    }
+  ]
+}
