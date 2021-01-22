@@ -31,9 +31,9 @@
       "description": "connection minio server bucketName",
       "defaultValue": "image"
     },{
-      "name": "minio.configDir",
+      "name": "minio.uploadPath",
       "type": "java.lang.String",
-      "description": "connection minio server configDir",
+      "description": "connection minio server uploadPath",
       "defaultValue": "home/data/"
     }
   ]

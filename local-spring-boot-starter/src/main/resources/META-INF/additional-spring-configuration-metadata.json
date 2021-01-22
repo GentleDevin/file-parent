@@ -1,10 +1,15 @@
 {
   "properties": [
     {
-      "name": "local.configDir",
+      "name": "local.uploadPath",
       "type": "java.lang.String",
-      "description": "this is local filestore configDir",
+      "description": "this is a local upload path",
       "defaultValue": "home/data/"
+    },{
+      "name": "local.accessPath",
+      "type": "java.lang.String",
+      "description": "this is a local access path",
+      "defaultValue": "/archive/**"
     }
   ]
 }

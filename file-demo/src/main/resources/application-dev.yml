@@ -29,6 +29,7 @@ spring:
     jpa:
       repositories:
         enabled: true
+
   jpa:
     database: MYSQL
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -36,7 +37,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-    ##open-in-view: true
+    open-in-view: true
 
 minio:
   endpoint: 192.168.200.197
@@ -45,5 +46,10 @@ minio:
   secretKey: admin123456
   secure: false
   bucketName: image
-  configDir: home/data/
+  uploadPath: home/data/
+
+
+local:
+  uploadPath: d:\\upload\
+  accessPath: /archive
 

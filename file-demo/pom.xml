@@ -26,10 +26,6 @@
     <dependencies>
         <!-- springboot基础包,添加web依赖包，自动匹配mvc、restful、jackjson、aop等的依赖包 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
@@ -53,11 +49,6 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.3</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.5.7</version>
         </dependency>
         <dependency>
             <groupId>com.file</groupId>
