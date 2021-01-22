@@ -14,7 +14,7 @@ public class DateUtils {
 
 	public static String getSystemCurrentDate() {
 		//格式化格式
-		String format = "YYYY-MM-dd hh:mm:ss";
+		String format = "YYYY-MM-dd HH:mm:ss";
 		// DateTimeFormatter.ofPattern方法根据指定的格式输出时间
 		String formatDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
 		return formatDateTime;

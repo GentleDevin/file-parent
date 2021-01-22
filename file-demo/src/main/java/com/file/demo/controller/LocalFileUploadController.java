@@ -35,7 +35,7 @@ public class LocalFileUploadController {
     @Autowired
     private LocalFileUploadYml localFileUploadYml;
 
-    private IFileUpload fileUpload = FileUploadFactory.getFileUploadByKey(FileUploadFactory.MIN_IO);
+    private IFileUpload fileUpload = FileUploadFactory.getFileUploadByKey(FileUploadFactory.LOCAL);
 
 
     /**

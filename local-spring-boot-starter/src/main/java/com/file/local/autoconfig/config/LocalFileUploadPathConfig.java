@@ -30,6 +30,7 @@ public class LocalFileUploadPathConfig extends WebMvcConfigurationSupport {
     protected void configureMessageConverters(List converters) {
         converters.add(responseBodyConverter());
     }
+
     @Bean
     public HttpMessageConverter responseBodyConverter() {
         StringHttpMessageConverter converter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
@@ -44,6 +45,4 @@ public class LocalFileUploadPathConfig extends WebMvcConfigurationSupport {
             registry.addResourceHandler(accessPath+"/**").addResourceLocations("file:"+uploadPath);
         }
     }
-
-
 }
