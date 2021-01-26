@@ -35,6 +35,11 @@
       "type": "java.lang.String",
       "description": "connection minio server uploadPath",
       "defaultValue": "home/data/"
+    },{
+      "name": "minio.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether minio uploading is enabled",
+      "defaultValue": true
     }
   ]
 }

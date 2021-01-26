@@ -2,7 +2,7 @@ package com.file.minio.utils;
 
 import com.file.commons.common.FileInfoResult;
 import com.file.commons.common.ResponseResult;
-import com.file.commons.utils.date.DateUtils;
+import com.file.commons.utils.io.SpringMvcFileUtils;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.PutObjectOptions;
@@ -15,7 +15,6 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +25,10 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @Title: Minio工具类
@@ -639,87 +641,28 @@ public class MinioUtil {
 
     /**
      * @Description: 单文件上传
-     * @CreateDate: 2021/01/11 16:25:51
-     * @param file: 文件类
-     * @param bucketName: 桶名称
-     * @param configDir: 文件配置路径
-     * @return: java.lang.String
+     * @param file : 文件类
+     * @param bucketName : 桶名称
+     * @param configDir : 文件配置路径
+     * @return: java.util.List<ResponseResult> 返回上传结果信息
+     * @CreateDate: 2021/01/08 17:41:42
      **/
-    public ResponseResult fileUpload(MultipartFile file, String bucketName, String configDir) {
-        ResponseResult responseResult = new ResponseResult();
-        if (file.isEmpty() || file.getSize() == 0) {
-            responseResult.put("code", HttpStatus.NO_CONTENT.value());
-            responseResult.put("msg", HttpStatus.NO_CONTENT.getReasonPhrase());
-            ResponseResult okResponseResult = ResponseResult.ok(responseResult);
-            return okResponseResult;
-        }
-        try {
-            if (!bucketExists(bucketName)) {
-                makeBucket(bucketName);
-            }
-            String fileName = file.getOriginalFilename();
-            String newName = configDir + UUID.randomUUID().toString().replaceAll("-", "")
-                    + fileName.substring(fileName.lastIndexOf("."));
-            InputStream inputStream = file.getInputStream();
-            putObject(bucketName, newName, inputStream);
-            inputStream.close();
-            String url = getObjectUrl(bucketName, newName);
-            responseResult.put("code", HttpStatus.OK.value());
-            responseResult.put("msg", HttpStatus.OK.getReasonPhrase());
-            responseResult.put("data",url);
-            ResponseResult okResponseResult = ResponseResult.ok(responseResult);
-            return okResponseResult;
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseResult.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            responseResult.put("msg", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-            ResponseResult okResponseResult = ResponseResult.ok(responseResult);
-            return okResponseResult;
-        }
-    }
-
-    /**
-     * @Description: 文件上传
-     * @param bucketName: 桶名称
-     * @param file: 文件类
-     * @param configDir: 文件配置路径
-     * @param responseResults: 上传结果信息集合
-     * @return: java.util.List<com.minio.common.ResponseResult> 返回上传结果信息
-       @CreateDate: 2021/01/08 17:41:42
-     **/
-    public static List<ResponseResult> fileUpload(MultipartFile file,String bucketName, String configDir,List<ResponseResult> responseResults) {
-        ResponseResult responseResult = new ResponseResult();
-        if (file.isEmpty() || file.getSize() == 0) {
-            responseResult.put("code", HttpStatus.NO_CONTENT.value());
-            responseResult.put("msg", HttpStatus.NO_CONTENT.getReasonPhrase());
-            responseResult.put("data", null);
-            responseResults.add(responseResult);
-            return responseResults;
-        }
+    public static void uploadFile(MultipartFile file, String bucketName, String configDir,ResponseResult responseResult ) throws IOException, InvalidResponseException, InvalidKeyException, NoSuchAlgorithmException, InternalException, XmlParserException, InvalidBucketNameException, InsufficientDataException, ErrorResponseException, RegionConflictException {
+        InputStream is = null;
         try {
             if (!bucketExists(bucketName)) {
                 makeBucket(bucketName);
             }
             FileInfoResult fileInfo = new FileInfoResult();
-            initFileInfo(file,fileInfo);
-            InputStream inputStream = file.getInputStream();
+            SpringMvcFileUtils.initFileInfo(file,fileInfo);
+            is = file.getInputStream();
             //文件名称(相对路径)
             String objectName = configDir+fileInfo.getFileSaveName();
-            putObject(bucketName, objectName, inputStream);
-            inputStream.close();
+            putObject(bucketName, objectName, is);
             fileInfo.setFileSavePath(getObjectUrl(bucketName, objectName));
-            responseResult.put("code", HttpStatus.OK.value());
-            responseResult.put("msg", HttpStatus.OK.getReasonPhrase());
             responseResult.put("data",fileInfo);
-            responseResults.add(responseResult);
-            return responseResults;
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseResult.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
-            responseResult.put("msg", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-            responseResult.put("data", null);
-            responseResults.add(responseResult);
-            return responseResults;
+        } finally {
+            IOUtils.closeQuietly(is);
         }
     }
 
@@ -731,29 +674,13 @@ public class MinioUtil {
      * @param configDir: 文件配置路径
      * @return: java.lang.String
      **/
-    public static List<ResponseResult>  multiFileUpload(MultipartFile[] file,String bucketName, String configDir) {
+    public static List<ResponseResult>  multiFileUpload(MultipartFile[] file,String bucketName, String configDir) throws IOException, InvalidResponseException, RegionConflictException, InvalidKeyException, NoSuchAlgorithmException, ErrorResponseException, XmlParserException, InvalidBucketNameException, InsufficientDataException, InternalException {
         List<ResponseResult> responseResults = new ArrayList<>();
+        ResponseResult responseResult = new ResponseResult();
         for (MultipartFile multipartFile: file) {
-            fileUpload(multipartFile,bucketName,configDir,responseResults);
+            uploadFile(multipartFile, bucketName, configDir,responseResult);
         }
         return responseResults;
-    }
-
-    /**
-     * @Description: 初始化文件信息类
-     * @param file: 文件类
-     * @param fileInfo: 文件信息类
-     * @return: com.minio.common.FileInfo
-     * @CreateDate: 2021/01/13 17:42:21
-     **/
-    public static FileInfoResult initFileInfo(MultipartFile file, FileInfoResult fileInfo) {
-        fileInfo.setFileName(file.getOriginalFilename());
-        fileInfo.setFileSize(file.getSize());
-        fileInfo.setFileUploadTime(DateUtils.getSystemCurrentDate());
-        fileInfo.setFileSaveName(UUID.randomUUID().toString().replaceAll("-", "")
-                + fileInfo.getFileName().substring(fileInfo.getFileName().lastIndexOf(".")));
-        fileInfo.setFileStatus(1);
-        return fileInfo;
     }
 
     /**

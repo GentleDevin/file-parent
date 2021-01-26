@@ -2,8 +2,7 @@ package com.file.commons.utils.io;
 
 import com.file.commons.common.FileInfoResult;
 import com.file.commons.common.ResponseResult;
-import com.file.commons.common.ResultCommon;
-import com.file.commons.utils.date.DateUtils;
+import com.file.commons.utils.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +19,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 /**
- * @Title:
+ * @Title: SpringMvc文件工具类
  * @Description:
  * @Author: Devin
  * CreateDate: 2021/1/14 14:56
@@ -36,10 +35,11 @@ public class SpringMvcFileUtils {
      * @CreateDate: 2021/01/21 09:43:46
      * @return: void
      **/
-    public static boolean fileValidation(MultipartFile file , ResultCommon resultCommon) {
-        ResponseResult responseResult = new ResponseResult();
+    public static boolean fileValidation(MultipartFile file , ResponseResult responseResult) {
         if (file.isEmpty() || file.getSize() == 0) {
-            resultCommon = new ResultCommon<String>(HttpStatus.NO_CONTENT.value(),HttpStatus.NO_CONTENT.getReasonPhrase(),null);
+            responseResult.put("code",HttpStatus.NO_CONTENT.value());
+            responseResult.put("msg",HttpStatus.NO_CONTENT.getReasonPhrase());
+            responseResult.put("data",null);
             return false;
         }
         return true;
@@ -107,7 +107,7 @@ public class SpringMvcFileUtils {
     public static FileInfoResult initFileInfo(MultipartFile file, FileInfoResult fileInfo) {
         fileInfo.setFileName(file.getOriginalFilename());
         fileInfo.setFileSize(file.getSize());
-        fileInfo.setFileUploadTime(DateUtils.getSystemCurrentDate());
+        fileInfo.setFileUploadTime(DateUtil.getSystemCurrentDate());
         fileInfo.setFileSaveName(UUID.randomUUID().toString().replaceAll("-", "")
                 + fileInfo.getFileName().substring(fileInfo.getFileName().lastIndexOf(".")));
         fileInfo.setFileStatus(1);
@@ -138,7 +138,7 @@ public class SpringMvcFileUtils {
         // 把文件以二进制形式写回
         ResponseEntity<byte[]> result = null;
         try {
-            result = new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+            result = new ResponseEntity<byte[]>(FileUtil.readFileToByteArray(file), headers, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error(e.toString());
         }

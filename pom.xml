@@ -12,7 +12,6 @@
 
     <modules>
       <module>file-demo</module>
-      <module>file-api</module>
       <module>minio-spring-boot-starter</module>
       <module>local-spring-boot-starter</module>
     </modules>

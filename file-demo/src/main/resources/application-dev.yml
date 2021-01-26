@@ -47,9 +47,10 @@ minio:
   secure: false
   bucketName: image
   uploadPath: home/data/
-
+  enabled: true
 
 local:
   uploadPath: d:\\upload\
   accessPath: /archive
+  enabled: true
 

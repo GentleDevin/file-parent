@@ -11,23 +11,23 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum FileState {
+public enum FileStatus {
 
     /**
      * 文件操作OK状态码
      **/
     FILE_UPLOAD_OK(200, "文件上传成功"),
-    FILE_DOWNLOAD_OK(200, "文件上传成功"),
-    FILE_DELETE_OK(200, "文件删除成功"),
+    FILE_DOWNLOAD_OK(201, "文件下载成功"),
+    FILE_DELETE_OK(202, "文件删除成功"),
 
     /**
      * 文件操作ERROR状态码
      **/
     FILE_UPLOAD_ERROR(500, "文件上传失败"),
-    FILE_DOWNLOAD_ERROR(200, "文件上传成功"),
-    FILE_DELETE_ERROR(501,"文件删除失败");
+    FILE_DOWNLOAD_ERROR(501, "文件下载成功"),
+    FILE_DELETE_ERROR(502,"文件删除失败");
 
-    private Integer key;
+    private int key;
     private String value;
 
 }

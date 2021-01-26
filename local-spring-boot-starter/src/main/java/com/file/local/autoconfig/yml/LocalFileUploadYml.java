@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @Title: Minio yml配置文件类
+ * @Title: 本地文件上传yml配置文件类
  * @Description:
  * @Author: Devin
  * CreateDate: 2021/1/11 11:09
@@ -22,5 +22,10 @@ public class LocalFileUploadYml {
      * 访问映射文件路径
      **/
     private String accessPath;
+
+    /**
+     * 是否启用，true启用，false不启用
+     **/
+    private boolean enabled;
 
 }

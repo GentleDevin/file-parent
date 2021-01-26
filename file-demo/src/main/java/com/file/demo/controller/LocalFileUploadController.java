@@ -1,11 +1,6 @@
 package com.file.demo.controller;
 
 
-import com.file.api.strategy.FileUploadFactory;
-import com.file.api.strategy.IFileUpload;
-import com.file.commons.common.ResultCommon;
-import com.file.commons.enums.FileState;
-import com.file.demo.entity.FileInfo;
 import com.file.demo.service.LocalFileUploadService;
 import com.file.local.autoconfig.yml.LocalFileUploadYml;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @Title: 本地文件上传信息控制类
@@ -35,8 +29,6 @@ public class LocalFileUploadController {
     @Autowired
     private LocalFileUploadYml localFileUploadYml;
 
-    private IFileUpload fileUpload = FileUploadFactory.getFileUploadByKey(FileUploadFactory.LOCAL);
-
 
     /**
      * @Description: 文件上传
@@ -46,17 +38,8 @@ public class LocalFileUploadController {
      **/
     @PostMapping("/upload")
     public String uploadFile(MultipartFile[] files, HttpServletRequest request) {
-        List<ResultCommon> resultCommonList = null;
-        try {
-           resultCommonList = fileUpload.uploadFile(files,request,localFileUploadYml);
-           localFileUploadService.save(resultCommonList);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return FileState.FILE_UPLOAD_ERROR.getValue();
-        }
-        return resultCommonList.toString();
+        return localFileUploadService.multiUploadFile(files,request,localFileUploadYml);
     }
-
 
     /**
      * @Description: 文件下载
@@ -67,7 +50,7 @@ public class LocalFileUploadController {
      **/
     @GetMapping("/download")
     public String downloadFile(HttpServletResponse response,String fileName)  {
-        return fileUpload.accessFile(response,localFileUploadYml.getUploadPath(),fileName,"attachment");
+        return localFileUploadService.accessFile(response,localFileUploadYml.getUploadPath(),fileName,"attachment");
     }
 
     /**
@@ -78,8 +61,8 @@ public class LocalFileUploadController {
      * @return: java.lang.String
      **/
     @GetMapping("/preview")
-    public String previewFile(HttpServletResponse response,String fileName)  {
-        return fileUpload.accessFile(response,localFileUploadYml.getUploadPath(),fileName,"inline");
+    public String previewFile(HttpServletResponse response,String fileName) {
+        return localFileUploadService.accessFile(response,localFileUploadYml.getUploadPath(),fileName,"inline");
     }
 
     /**
@@ -90,15 +73,6 @@ public class LocalFileUploadController {
      **/
     @PostMapping(value = "/delete")
     public String delete(@RequestParam("fileId") Long fileId) {
-        try {
-            FileInfo fileInfo = localFileUploadService.getOne(fileId);
-            fileUpload.deleteFile(localFileUploadYml.getUploadPath(),fileInfo.getFileSaveName());
-            localFileUploadService.delete(fileInfo);
-        }catch (Exception e) {
-            logger.error(e.getMessage());
-            return FileState.FILE_DELETE_ERROR.getValue();
-        }
-        return FileState.FILE_DELETE_OK.getValue();
+        return  localFileUploadService.delete(fileId,localFileUploadYml.getUploadPath());
     }
-
 }

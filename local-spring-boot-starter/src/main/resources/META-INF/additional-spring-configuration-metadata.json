@@ -10,6 +10,11 @@
       "type": "java.lang.String",
       "description": "this is a local access path",
       "defaultValue": "/archive/**"
+    },{
+      "name": "local.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether local uploading is enabled",
+      "defaultValue": true
     }
   ]
 }

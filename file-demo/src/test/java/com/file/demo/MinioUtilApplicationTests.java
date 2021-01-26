@@ -1,7 +1,7 @@
 package com.file.demo;
 
 import com.file.commons.common.ResponseResult;
-import com.file.commons.utils.date.DateUtils;
+import com.file.commons.utils.date.DateUtil;
 import com.file.demo.dao.FileInfoDAO;
 import com.file.demo.dao.FileTypeDAO;
 import com.file.demo.dao.UserinfoDAO;
@@ -45,7 +45,7 @@ public class MinioUtilApplicationTests {
             userInfo.setUserName("zs"+i);
             userInfo.setPassword("123456");
             userInfo.setPhone(1385654144);
-            userInfo.setRegisterTime(DateUtils.getSystemCurrentDate());
+            userInfo.setRegisterTime(DateUtil.getSystemCurrentDate());
             userInfo.setStatus(1);
             userinfoDAO.save(userInfo);
 
@@ -62,7 +62,7 @@ public class MinioUtilApplicationTests {
             fileInfo.setFileStatus(1);
             fileInfo.setFileType(fileType);
             fileInfo.setUser(userInfo);
-            fileInfo.setFileUploadTime(DateUtils.getSystemCurrentDate());
+            fileInfo.setFileUploadTime(DateUtil.getSystemCurrentDate());
             fileInfoDAO.save(fileInfo);
         }
     }

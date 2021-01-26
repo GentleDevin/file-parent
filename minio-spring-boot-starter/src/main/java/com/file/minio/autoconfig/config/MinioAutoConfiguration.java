@@ -8,6 +8,7 @@ import io.minio.errors.InvalidPortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Bean;
  * @CreateDate: 2021/01/07 11:26:36
  **/
 @ConditionalOnClass(MinioClient.class)
+@ConditionalOnProperty(prefix = "minio",name = "enabled",havingValue = "true")
 @EnableConfigurationProperties(value = MinioYml.class)
 public class MinioAutoConfiguration {
     private static Logger logger= LogManager.getLogger(MinioAutoConfiguration.class.getName());

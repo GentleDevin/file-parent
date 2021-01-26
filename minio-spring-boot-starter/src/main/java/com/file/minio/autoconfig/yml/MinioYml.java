@@ -26,5 +26,7 @@ public class MinioYml {
     private String bucketName;
     //配置目录
     private String uploadPath;
+    //是否开启装配，true开启，false不开启
+    private boolean enabled;
 
 }

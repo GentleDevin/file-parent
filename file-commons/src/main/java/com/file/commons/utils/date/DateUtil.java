@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  * @Author: Devin 
  * @CreateDate: 2021/01/14 13:40:58
  **/
-public class DateUtils {
+public class DateUtil {
 
 	public static String getSystemCurrentDate() {
 		//格式化格式

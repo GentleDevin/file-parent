@@ -12,7 +12,7 @@ import java.util.zip.ZipFile;
 /**
  * 文件操作的基本工具类，具体看源码，包含了文件、文件夹的 解压、压缩、复制、移动、读取目录、文件修改、文件读写等各种操作的常用方法
  * */
-public class FileUtils extends org.apache.commons.io.FileUtils {
+public class FileUtil extends org.apache.commons.io.FileUtils {
 
 	/**
 	 *  解压文件的基本方法
